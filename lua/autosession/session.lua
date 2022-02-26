@@ -31,6 +31,7 @@ M.SaveSession = function(create_new_if_not_exist)
     if window.valid_win_open_counter() or basef.Confirm(confirm_msg, "y", true) then
       vim.cmd("mksession! " .. sessionpath)
       print(M.sessionfile_name .. " created.")
+      vim.cmd("redraw")
     else
       lib.echo("Aborted!", "error")
     end
