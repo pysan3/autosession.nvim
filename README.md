@@ -59,7 +59,7 @@ Use the following commands.
 
 `:AutoSessionSave`
 
-<!-- ![autosession-save-demo](./figures/demo-gif/restore-session.GIF) -->
+![restore-session](https://user-images.githubusercontent.com/41065736/155856720-f9367491-c4ba-47ed-973c-d1e1ac424c65.GIF)
 
 ## Tips
 
@@ -69,13 +69,13 @@ Use the following commands.
 
 By calling `AutoSessionGlobal`, this plugin will register the current session as a session in Startify's menu screen.
 
-<!-- ![autosession-global-demo](./figures/demo-gif/as-global.gif) -->
+![as-global](https://user-images.githubusercontent.com/41065736/155856692-cf709368-bd24-42d8-8a75-8a45a068a529.gif)
 
 ### [nvim-notify](https://github.com/rcarriga/nvim-notify)
 
 Enhances help menu for this plugin
 
-<!-- ![nvim-notify-notification-capture](./figures/notifications/nvim-notify.png) -->
+![nvim-notify](https://user-images.githubusercontent.com/41065736/155856293-59d1c3ad-fec6-4008-add8-326fd83ca153.png)
 
 ## Please Read
 
@@ -84,11 +84,11 @@ Enhances help menu for this plugin
 This plugin has an issue that fails to restore the session when `AutoSessionSave` is called when a notification is on the screen. Notifications are created with plugins such as.
 
 - [Neogit](https://github.com/TimUntersberger/neogit)
-  <!-- - <img src="./figures/notifications/neogit.png" alt="neogit-notification-capture" height="100"/> -->
+  - <img src="https://user-images.githubusercontent.com/41065736/155856324-3d0b1e19-952c-465a-ad17-8ee30aed081d.png" alt="neogit-notification-capture" height="100"/>
 - [fidget.nvim](https://github.com/j-hui/fidget.nvim)
-  <!-- - <img src="./figures/notifications/fidget.png" alt="fidget-notification-capture" height="100"/> -->
+  - <img src="https://user-images.githubusercontent.com/41065736/155856311-e36083f4-b8ee-4086-a37b-59c86073cda1.png" alt="fidget-notification-capture" height="100"/>
 - [nvim-notify](https://github.com/rcarriga/nvim-notify)
-  <!-- - <img src="./figures/notifications/nvim-notify.png" alt="nvim-notify-notification-capture" height="100"/> -->
+  - <img src="https://user-images.githubusercontent.com/41065736/155856293-59d1c3ad-fec6-4008-add8-326fd83ca153.png" alt="nvim-notify-notification-capture" height="100"/>
 
 When notification is detected, this will be prompt.
 Please press _ENTER_ or `y` after the notifications are gone.
