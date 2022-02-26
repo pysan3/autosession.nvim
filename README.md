@@ -8,7 +8,7 @@ This plugin allows saving sessions per-directory, which will be resumed next tim
 
 `:AutoSessionSave`
 
-![restore-session](https://user-images.githubusercontent.com/41065736/155856720-f9367491-c4ba-47ed-973c-d1e1ac424c65.GIF)
+<img src="https://user-images.githubusercontent.com/41065736/155856720-f9367491-c4ba-47ed-973c-d1e1ac424c65.GIF" alt="restore-session" width="100%"/>
 
 ## Install
 
