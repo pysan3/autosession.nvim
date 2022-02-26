@@ -1,0 +1,1 @@
+# autosession.nvim
