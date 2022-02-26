@@ -2,21 +2,33 @@ local M = {}
 
 local basef = require("autosession.base-functions")
 local lib = require("autosession.lib")
+local window = require("autosession.window")
 
+local DEFAULT_OPTS = {
+  save_session_global_dir = vim.g.startify_session_dir or vim.fn.stdpath("data") .. "/session",
+  sessionfile_name = ".session.vim",
+}
+M.setup = function(opts)
+  opts = lib.merge_options(opts, DEFAULT_OPTS)
+  for key, value in pairs(opts) do
+    M[key] = value
+  end
+end
+
+---Creates .session.vim which stores data to restore current session
+---Call with `:AutoSessionSave` or `:AutoSessionAuto`.
+---@param create_new_if_not_exist boolean (default: false) false will not create file if not exists
+---@return string absolute path to .session.vim
 M.SaveSession = function(create_new_if_not_exist)
   local cwd = vim.fn.getcwd()
-  if basef.FullPath(cwd) == basef.FullPath(vim.env.HOME) then
-    lib.echo("Currently working in $HOME directory. Not saving session.")
-    return nil
-  end
-  local sessionpath = basef.FullPath(cwd .. "/.session.vim")
+  local sessionpath = basef.FullPath(cwd .. "/" .. M.sessionfile_name)
   if create_new_if_not_exist == true or basef.file_exist(sessionpath) then
     local wait_counter = 1000
-    while vim.g.autosession_win_opened > 0 and wait_counter > 0 do
+    while not window.valid_win_open_counter() and wait_counter > 0 do
       wait_counter = wait_counter - 1
     end
     local confirm_msg = "May crush. Please wait until all Notification are gone. Continue? [Y/n]:"
-    if vim.g.autosession_win_opened <= 0 or basef.Confirm(confirm_msg, "y", true) then
+    if window.valid_win_open_counter() or basef.Confirm(confirm_msg, "y", true) then
       vim.cmd("mksession! " .. sessionpath)
       lib.echo(".session.vim created.")
     else
@@ -26,14 +38,16 @@ M.SaveSession = function(create_new_if_not_exist)
   return sessionpath
 end
 
+---Adds symlink of current session to `save_session_global_dir` so that startify can load it
+---@return boolean succeeded or not
 M.SaveGlobalSession = function()
   local cwd = vim.fn.getcwd()
-  if not vim.g.startify_session_dir then
-    lib.echo("Please set `g:startify_session_dir`.\nAbort", "error")
+  if not M.save_session_global_dir then
+    lib.echo("Please set `save_session_global_dir` or `g:startify_session_dir`.\nAbort", "error")
     return false
   end
-  vim.fn.mkdir(basef.FullPath(vim.g.startify_session_dir), "p")
-  local dirname = basef.FullPath(vim.g.startify_session_dir) .. "/" .. basef.SessionName(cwd)
+  vim.fn.mkdir(basef.FullPath(M.save_session_global_dir), "p")
+  local dirname = basef.FullPath(M.save_session_global_dir) .. "/" .. basef.SessionName(cwd)
   local sessionpath = M.SaveSession(true)
   if not basef.file_exist(dirname) or basef.Confirm(dirname .. " exists. Overwrite? [y/N]:", "n", false) then
     io.popen("ln -sf " .. sessionpath .. " " .. dirname .. " >/dev/null 2>/dev/null"):close()
@@ -49,9 +63,12 @@ M.SaveGlobalSession = function()
   return false
 end
 
+---Call to restore the session from ./.session.vim
+---In order to restore session on VimEnter, set `restore_on_setup` = true
+---@return boolean success
 M.RestoreSession = function()
   local cwd = vim.fn.getcwd()
-  local sessionpath = basef.FullPath(cwd .. "/.session.vim")
+  local sessionpath = basef.FullPath(cwd .. "/" .. M.sessionfile_name)
   if not vim.fn.filereadable(sessionpath) then
     return false
   end
@@ -75,10 +92,12 @@ M.RestoreSession = function()
   return true
 end
 
+---Call to delete Global sessions
+---@return boolean success
 M.DeleteSession = function()
   local cwd = vim.fn.getcwd()
   local session_list = {}
-  for line in vim.fn.globpath(basef.FullPath(vim.g.startify_session_dir), "[^_]*"):gmatch("([^\n]+)") do
+  for line in vim.fn.globpath(basef.FullPath(M.save_session_global_dir), "[^_]*"):gmatch("([^\n]+)") do
     table.insert(session_list, line)
   end
   local session_len = #session_list
@@ -112,7 +131,7 @@ M.DeleteSession = function()
   end
   if current >= 1 then
     os.remove(basef.s_trim(session_list[current]))
-    local sessionpath = basef.FullPath(cwd .. "/.session.vim")
+    local sessionpath = basef.FullPath(cwd .. "/" .. M.sessionfile_name)
     os.remove(sessionpath)
     lib.echo("Delete " .. session_list[current])
   else

@@ -20,6 +20,10 @@ M.help = function()
   M.echo(str, "warn", { title = M.plugin_name .. " Help" })
 end
 
+---wrapper of base-functions.echo: adds title and icon
+---@param msg string
+---@param level string ("info", "warn", "error")
+---@param ... any any options to pass to vim.notify
 M.echo = function(msg, level, ...)
   if not level then
     level = "info"
@@ -28,6 +32,10 @@ M.echo = function(msg, level, ...)
   opts.title = opts.title or M.plugin_name
   opts.icon = opts.icon or M.plugin_icon
   basef.echo(msg, level, opts)
+end
+
+M.merge_options = function(opts, default)
+  return vim.tbl_deep_extend("force", default, opts or {})
 end
 
 return M
