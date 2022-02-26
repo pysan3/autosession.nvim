@@ -17,8 +17,8 @@ end
 
 ---Creates .session.vim which stores data to restore current session
 ---Call with `:AutoSessionSave` or `:AutoSessionAuto`.
----@param create_new_if_not_exist boolean (default: false) false will not create file if not exists
----@return string absolute path to .session.vim
+---@param create_new_if_not_exist boolean: (default: false) false will not create file if not exists
+---@return string: absolute path to .session.vim
 M.SaveSession = function(create_new_if_not_exist)
   local cwd = vim.fn.getcwd()
   local sessionpath = basef.FullPath(cwd .. "/" .. M.sessionfile_name)
@@ -39,7 +39,7 @@ M.SaveSession = function(create_new_if_not_exist)
 end
 
 ---Adds symlink of current session to `save_session_global_dir` so that startify can load it
----@return boolean succeeded or not
+---@return boolean: succeeded or not
 M.SaveGlobalSession = function()
   local cwd = vim.fn.getcwd()
   if not M.save_session_global_dir then
@@ -65,7 +65,7 @@ end
 
 ---Call to restore the session from ./.session.vim
 ---In order to restore session on VimEnter, set `restore_on_setup` = true
----@return boolean success
+---@return boolean: success
 M.RestoreSession = function()
   local cwd = vim.fn.getcwd()
   local sessionpath = basef.FullPath(cwd .. "/" .. M.sessionfile_name)
@@ -93,7 +93,7 @@ M.RestoreSession = function()
 end
 
 ---Call to delete Global sessions
----@return boolean success
+---@return boolean: success
 M.DeleteSession = function()
   local cwd = vim.fn.getcwd()
   local session_list = {}

@@ -22,8 +22,8 @@ end
 
 ---wrapper of base-functions.echo: adds title and icon
 ---@param msg string
----@param level string ("info", "warn", "error")
----@param ... any any options to pass to vim.notify
+---@param level string: ("info", "warn", "error")
+---@param ... any: any options to pass to vim.notify
 M.echo = function(msg, level, ...)
   if not level then
     level = "info"

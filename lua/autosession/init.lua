@@ -32,7 +32,7 @@ local DEFAULT_OPTS = {
   sessionfile_name = ".session.vim",
 }
 ---setup function, call on startup
----@param opts table look https://github.com/pysan3/autosession.nvim for config detail
+---@param opts table: look https://github.com/pysan3/autosession.nvim for config detail
 M.setup = function(opts)
   lib.merge_options(opts, DEFAULT_OPTS)
   window.init_win_open_safe()
