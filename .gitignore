@@ -44,4 +44,4 @@ poetry.lock
 *.dvi
 *.gz
 *.xcp
-
+figures/
