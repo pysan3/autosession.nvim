@@ -15,10 +15,10 @@ M.setup = function(opts)
   end
 end
 
----Creates .session.vim which stores data to restore current session
+---Creates `sessionfile_name` which stores data to restore current session
 ---Call with `:AutoSessionSave` or `:AutoSessionAuto`.
 ---@param create_new_if_not_exist boolean: (default: false) false will not create file if not exists
----@return string: absolute path to .session.vim
+---@return string: absolute path to `sessionfile_name`
 M.SaveSession = function(create_new_if_not_exist)
   local cwd = vim.fn.getcwd()
   local sessionpath = basef.FullPath(cwd .. "/" .. M.sessionfile_name)
@@ -30,7 +30,7 @@ M.SaveSession = function(create_new_if_not_exist)
     local confirm_msg = "May crush. Please wait until all Notification are gone. Continue? [Y/n]:"
     if window.valid_win_open_counter() or basef.Confirm(confirm_msg, "y", true) then
       vim.cmd("mksession! " .. sessionpath)
-      lib.echo(".session.vim created.")
+      print(M.sessionfile_name .. " created.")
     else
       lib.echo("Aborted!", "error")
     end
@@ -63,7 +63,7 @@ M.SaveGlobalSession = function()
   return false
 end
 
----Call to restore the session from ./.session.vim
+---Call to restore the session from `sessionfile_name`
 ---In order to restore session on VimEnter, set `restore_on_setup` = true
 ---@return boolean: success
 M.RestoreSession = function()

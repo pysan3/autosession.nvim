@@ -41,7 +41,7 @@ M.close_win_open = function(msg)
   end
 end
 
----return if there are no fake windows now
+---return true if there are no fake windows now
 ---@return boolean: whether there are no fake windows
 M.valid_win_open_counter = function()
   return M.win_open_counter <= 0
