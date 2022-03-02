@@ -4,6 +4,12 @@
 
 This plugin allows saving sessions per-directory, which will be resumed next time you open nvim in that directory.
 
+## Demo
+
+`:AutoSessionSave`
+
+<img src="https://user-images.githubusercontent.com/41065736/155856720-f9367491-c4ba-47ed-973c-d1e1ac424c65.GIF" alt="restore-session" width="100%"/>
+
 ## Install
 
 Install with [vim-plug](https://github.com/junegunn/vim-plug):
@@ -54,12 +60,6 @@ Use the following commands.
   - Runs `AutoSessionSave` along the way.
 - `AutoSessionDelete`
   - Delete a global session.
-
-## Demo
-
-`:AutoSessionSave`
-
-![restore-session](https://user-images.githubusercontent.com/41065736/155856720-f9367491-c4ba-47ed-973c-d1e1ac424c65.GIF)
 
 ## Tips
 
