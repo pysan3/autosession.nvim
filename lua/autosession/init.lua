@@ -1,8 +1,9 @@
-local M = {}
-
 local lib = require("autosession.lib")
 local session = require("autosession.session")
 local window = require("autosession.window")
+
+-- import functions from window, session, lib
+local M = vim.tbl_deep_extend("force", lib, window, session)
 
 local function setup_vim_commands()
   vim.cmd([[
@@ -15,15 +16,6 @@ local function setup_vim_commands()
   ]])
 end
 
--- import functions from window, session, lib
-for key, value in pairs(window) do
-  M[key] = value
-end
-for key, value in pairs(session) do
-  M[key] = value
-end
-M.help = lib.help
-
 local DEFAULT_OPTS = {
   msg = nil,
   restore_on_setup = false,
@@ -31,6 +23,7 @@ local DEFAULT_OPTS = {
   save_session_global_dir = vim.g.startify_session_dir or vim.fn.stdpath("data") .. "/session",
   sessionfile_name = ".session.vim",
 }
+
 ---setup function, call on startup
 ---@param opts table: look https://github.com/pysan3/autosession.nvim for config detail
 M.setup = function(opts)
