@@ -29,6 +29,10 @@ M.SaveSession = function(create_new_if_not_exist)
     end
     local confirm_msg = "May crush. Please wait until all Notification are gone. Continue? [Y/n]:"
     if window.valid_win_open_counter() or basef.Confirm(confirm_msg, "y", true) then
+      local parent_dirname = vim.fn.fnamemodify(sessionpath, ":p:h")
+      if vim.fn.isdirectory(parent_dirname) == 0 then
+        vim.fn.mkdir(parent_dirname, "p")
+      end
       vim.cmd("mksession! " .. sessionpath)
       print(M.sessionfile_name .. " created.")
       vim.cmd("redraw")
