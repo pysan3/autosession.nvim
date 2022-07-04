@@ -20,6 +20,7 @@ local DEFAULT_OPTS = {
   msg = nil,
   restore_on_setup = false,
   autosave_on_quit = false,
+  force_autosave = false,
   save_session_global_dir = vim.g.startify_session_dir or vim.fn.stdpath("data") .. "/session",
   sessionfile_name = ".session.vim",
 }
