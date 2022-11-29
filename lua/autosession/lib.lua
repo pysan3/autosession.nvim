@@ -22,20 +22,43 @@ end
 
 ---wrapper of base-functions.echo: adds title and icon
 ---@param msg string
----@param level string: ("info", "warn", "error")
+---@param level integer | string | nil: ("info", "warn", "error")
 ---@param ... any: any options to pass to vim.notify
 M.echo = function(msg, level, ...)
-  if not level then
-    level = "info"
-  end
   local opts = { ... }
   opts.title = opts.title or M.plugin_name
   opts.icon = opts.icon or M.plugin_icon
   basef.echo(msg, level, opts)
 end
 
-M.merge_options = function(opts, default)
-  return vim.tbl_deep_extend("force", default, opts or {})
+---wrapper of base-functions.echo: adds title and icon
+---@param msg string
+---@param ... any: any options to pass to vim.notify
+M.info = function(msg, ...)
+  local opts = { ... }
+  opts.title = opts.title or M.plugin_name
+  opts.icon = opts.icon or M.plugin_icon
+  basef.echo(msg, "info", opts)
+end
+
+---wrapper of base-functions.echo: adds title and icon
+---@param msg string
+---@param ... any: any options to pass to vim.notify
+M.warn = function(msg, ...)
+  local opts = { ... }
+  opts.title = opts.title or M.plugin_name
+  opts.icon = opts.icon or M.plugin_icon
+  basef.echo(msg, "warn", opts)
+end
+
+---wrapper of base-functions.echo: adds title and icon
+---@param msg string
+---@param ... any: any options to pass to vim.notify
+M.error = function(msg, ...)
+  local opts = { ... }
+  opts.title = opts.title or M.plugin_name
+  opts.icon = opts.icon or M.plugin_icon
+  basef.echo(msg, "error", opts)
 end
 
 return M

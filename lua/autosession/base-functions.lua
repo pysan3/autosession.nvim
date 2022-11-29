@@ -2,11 +2,11 @@ local M = {}
 
 ---echos `msg` as a vim.notify
 ---@param msg string: message to notify
----@param level string | nil: ("info", "warn", "error"), if nil, "info" is used
+---@param level integer | string | nil: ("info", "warn", "error"), if nil, "info" is used
 ---@param ... any: Any options to pass to vim.notify
 M.echo = function(msg, level, ...)
-  if level == nil then
-    level = "info"
+  if level == nil or type(level) == "string" then
+    level = vim.log.levels[string.upper(level or "info")]
   end
   vim.notify(msg, level, ...)
 end
@@ -22,19 +22,28 @@ end
 ---returns string where `t` is trimmed from both sides of `s`
 ---@param s string: base string
 ---@param t string | nil: string to be trimmed, if nil, '%s' is used
----@return string:
 M.s_trim = function(s, t)
   if not t then
     t = "%s"
   end
-  return string.gsub(s, "^" .. t .. "*(.-)" .. t .. "*$", "%1")
+  local result = string.gsub(s, "^" .. t .. "*(.-)" .. t .. "*$", "%1")
+  return result
+end
+
+---path_win2unix
+-- Converts Windows style path to unix style (path with /)
+---@param path string
+M.path_win2unix = function(path)
+  -- local result = string.gsub(path, "\\", "/")
+  local result = path
+  return result
 end
 
 ---same as running `basename "$path"` in command line
 ---@param path string: path to file
----@return string: returns the basename of `path`
 M.basename = function(path)
-  return string.gsub(M.s_trim(path), "(.*/)(.*)", "%2")
+  local result = string.gsub(M.s_trim(path), "(.*/)(.*)", "%2")
+  return result
 end
 
 ---Confirm: asks for a confirmation in cmd
@@ -44,7 +53,7 @@ end
 ---@return boolean:
 M.Confirm = function(msg, ans, default)
   print(msg .. " ")
-  local raw_ans = tonumber(vim.fn.getchar(), 10)
+  local raw_ans = tonumber(vim.fn.getcharstr(), 10)
   local answer = string.char(raw_ans):lower()
   if answer == ans:lower() or raw_ans == 13 then -- \n returns the default
     return default
@@ -59,12 +68,11 @@ end
 
 ---SessionName: returns the basename of `path`
 ---@param path string: path to cwd
----@return string: basename of cwd
 M.SessionName = function(path)
   if path == "" then
     return ""
   end
-  return M.s_trim(M.basename(path), "%.")
+  return M.s_trim(M.basename(M.path_win2unix(path)), "%.")
 end
 
 ---FullPath: returns `path`'s absolute path
