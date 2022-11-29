@@ -17,9 +17,11 @@ M.SaveSession = function(create_new_if_not_exist)
       if vim.fn.isdirectory(parent_dirname) == 0 then
         vim.fn.mkdir(parent_dirname, "p")
       end
-      vim.cmd("mksession! " .. sessionpath)
-      print(config.sessionfile_name .. " created.")
-      vim.cmd("redraw")
+      local success, _ = lib.safe_cmd("mksession! " .. sessionpath, "Failed to make session to " .. sessionpath)
+      if success then
+        print(config.sessionfile_name .. " created.")
+        vim.cmd("redraw")
+      end
     else
       lib.echo("Aborted!", "error")
     end
@@ -67,19 +69,16 @@ M.RestoreSession = function()
     return false
   end
   if basef.file_exist(sessionpath) then
-    vim.cmd("so " .. sessionpath)
+    lib.safe_cmd("so " .. sessionpath, "`:RestoreSession` failed")
   elseif config.warn_on_setup then
     lib.echo("AutoSession WARN: Last session not found. Run :AutoSessionSave to save session.")
   end
   local current_session = basef.SessionName(cwd)
   for buf = 1, vim.fn.bufnr("$") do ---@diagnostic disable-line
     local bufname = vim.fn.bufname(buf)
-    if string.match(bufname, "^.*/$") then
-      vim.cmd("bd " .. bufname)
-    elseif string.match(bufname, "^\\[.*\\]$") then
-      vim.cmd("bd " .. bufname)
-    elseif basef.SessionName(bufname) == current_session then
-      vim.cmd("bd " .. bufname)
+    if string.match(bufname, "^.*/$") or string.match(bufname, "^\\[.*\\]$") or
+        basef.SessionName(bufname) == current_session then
+      lib.safe_cmd("bd " .. bufname, string.format("Failed to delete buffer `%s`", bufname))
     end
   end
   return true

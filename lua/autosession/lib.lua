@@ -61,4 +61,16 @@ M.error = function(msg, ...)
   basef.echo(msg, "error", opts)
 end
 
+---safely run vim.cmd
+---@param cmd string: command to execute. passed to vim.cmd
+---@param error_msg string: error message to notify if command failed
+---@return boolean, any: result of vim.cmd(cmd)
+M.safe_cmd = function(cmd, error_msg)
+  local suc, res = pcall(vim.cmd, cmd) ---@diagnostic disable-line
+  if not suc then
+    M.error(string.format("%s: %s", error_msg, res))
+  end
+  return suc, res
+end
+
 return M
