@@ -47,19 +47,20 @@ require("autosession").setup({
 
 Use the following commands.
 
-- `AutoSession`
+- `:AutoSession`
   - Show help
-- `AutoSessionRestore`
+- `:AutoSessionRestore`
   - Restore previous session from `.session.vim`.
-- `AutoSessionSave`
+- `:AutoSessionSave`
   - Create `.session.vim` to store current session.
-- `AutoSessionAuto`
+- `:AutoSessionAuto`
   - Update `.session.vim` **only if exists**.
   - This is called on nvim shutdown (`VimLeave`) if `autosave_on_quit == true`
-- `AutoSessionGlobal`
+- `:AutoSessionGlobal`
   - Resigter current session for vim-startify.
   - Runs `AutoSessionSave` along the way.
-- `AutoSessionDelete`
+  - WARNING: Only works on \*nix systems. Aborting on Windows (except Cygwin).
+- `:AutoSessionDelete`
   - Delete a global session.
 
 ## Tips
