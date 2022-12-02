@@ -33,7 +33,7 @@ end
 -- WARNING: Only works on *nix systems.
 ---@return boolean: succeeded or not
 M.SaveGlobalSession = function()
-  if vim.fn.has("win64") == 0 or vim.fn.has("win32") == 0 or vim.fn.has("win16") == 0 then
+  if vim.fn.has("win64") == 1 or vim.fn.has("win32") == 1 or vim.fn.has("win16") == 1 then
     lib.echo("SaveGlobalSession only works on *nix systems. Aborting on Windows.", "error")
     return false
   end
