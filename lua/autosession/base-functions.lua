@@ -47,23 +47,17 @@ M.basename = function(path)
 end
 
 ---Confirm: asks for a confirmation in cmd
----@param msg string: dont forget to add [y/N] or [Y/n] at the end
----@param ans string: what would be the default option. usually 'y' or 'n'
+---@param msg string: confirm message asking yes / no
 ---@param default boolean: return value if <CR> was pressed without any letter
 ---@return boolean:
-M.Confirm = function(msg, ans, default)
-  print(msg .. " ")
-  local raw_ans = tonumber(vim.fn.getcharstr(), 10)
-  local answer = string.char(raw_ans):lower()
-  if answer == ans:lower() or raw_ans == 13 then -- \n returns the default
-    return default
-  elseif answer == "n" then
-    return false
-  elseif answer == "y" then
-    return true
-  else
-    return not default
+M.Confirm = function(msg, default)
+  local yes = default and "YES" or "yes"
+  local no = default and "no" or "NO"
+  local answer = vim.fn.confirm(msg, string.format("&%s\n&%s", yes, no), default and 1 or 2)
+  if answer == 0 then
+    return M.Confirm(msg .. " Press `y` or `n`.", default)
   end
+  return answer == 1
 end
 
 ---SessionName: returns the basename of `path`

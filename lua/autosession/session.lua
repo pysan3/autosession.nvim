@@ -45,7 +45,7 @@ M.SaveGlobalSession = function()
   vim.fn.mkdir(basef.FullPath(config.save_session_global_dir), "p")
   local dirname = basef.FullPath(config.save_session_global_dir) .. "/" .. basef.SessionName(cwd)
   local sessionpath = M.SaveSession(true)
-  if not basef.file_exist(dirname) or basef.Confirm(dirname .. " exists. Overwrite? [y/N]:", "n", false) then
+  if not basef.file_exist(dirname) or basef.Confirm(dirname .. " exists. Overwrite?", false) then
     io.popen("ln -sf " .. sessionpath .. " " .. dirname .. " >/dev/null 2>/dev/null"):close()
     if basef.file_exist(dirname) then
       lib.echo("Saved session as: " .. dirname)
