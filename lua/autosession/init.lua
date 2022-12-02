@@ -24,7 +24,7 @@ M.setup = function(opts)
   if config.msg ~= nil then
     lib.echo(config.msg)
   end
-  if config.save_session_global_dir ~= vim.g.startify_session_dir then
+  if vim.g.startify_session_dir ~= nil and config.save_session_global_dir ~= vim.g.startify_session_dir then
     lib.warn(string.format([[
 `save_session_global_dir` is different from vim.g.startify_session_dir: %s, %s
 This plugin will overwrite it. Do not set save_session_global_dir if use vim.g.startify_session_dir
