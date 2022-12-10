@@ -71,7 +71,10 @@ M.RestoreSession = function()
   -- memorize files specified in the arguments
   local memory = {}
   for buf = 1, vim.fn.bufnr("$") do ---@diagnostic disable-line
-    table.insert(memory, 0, vim.api.nvim_buf_get_name(buf))
+    local suc, bufname = pcall(vim.api.nvim_buf_get_name, buf)
+    if suc then
+      table.insert(memory, 0, bufname)
+    end
   end
   if basef.file_exist(sessionpath) then
     lib.safe_cmd("so " .. sessionpath, "`:RestoreSession` failed")
