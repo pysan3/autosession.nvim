@@ -4,7 +4,7 @@ local config = require("autosession.config")
 local window = require("autosession.window")
 
 -- import functions from window, session, lib
-local M = vim.tbl_deep_extend("force", {}, window, session)
+local M = vim.tbl_deep_extend("force", {}, window, session, lib)
 
 local function setup_vim_commands()
   lib.safe_cmd([[
