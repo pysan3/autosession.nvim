@@ -70,10 +70,9 @@ M.RestoreSession = function()
   end
   -- memorize files specified in the arguments
   local memory = {}
-  for buf = 1, vim.fn.bufnr("$") do ---@diagnostic disable-line
-    local suc, bufname = pcall(vim.api.nvim_buf_get_name, buf)
-    if suc then
-      table.insert(memory, 0, bufname)
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) == true then
+      table.insert(memory, 0, vim.api.nvim_buf_get_name(buf))
     end
   end
   if basef.file_exist(sessionpath) then
@@ -88,8 +87,8 @@ M.RestoreSession = function()
     end
   end
   local current_session = basef.SessionName(cwd)
-  for buf = 1, vim.fn.bufnr("$") do ---@diagnostic disable-line
-    local bufname = vim.api.nvim_buf_get_name(buf)
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    local bufname = vim.api.nvim_buf_is_valid(buf) == true and vim.api.nvim_buf_get_name(buf) or current_session
     if string.match(bufname, "^.*/$") or string.match(bufname, "^\\[.*\\]$") or
         basef.SessionName(bufname) == current_session then
       vim.api.nvim_buf_delete(buf, { force = true })
