@@ -65,20 +65,31 @@ end
 M.RestoreSession = function()
   local cwd = vim.fn.getcwd()
   local sessionpath = basef.FullPath(cwd .. "/" .. config.sessionfile_name)
-  if not vim.fn.filereadable(sessionpath) then
+  if not basef.file_exist(sessionpath) then
     return false
+  end
+  -- memorize files specified in the arguments
+  local memory = {}
+  for buf = 1, vim.fn.bufnr("$") do ---@diagnostic disable-line
+    table.insert(memory, 0, vim.api.nvim_buf_get_name(buf))
   end
   if basef.file_exist(sessionpath) then
     lib.safe_cmd("so " .. sessionpath, "`:RestoreSession` failed")
   elseif config.warn_on_setup then
     lib.echo("AutoSession WARN: Last session not found. Run :AutoSessionSave to save session.")
   end
+  -- load the files specified in the arguments after loading the session
+  for _, bufname in ipairs(memory) do
+    if bufname ~= nil and string.len(bufname) > 0 then
+      vim.cmd.edit(bufname)
+    end
+  end
   local current_session = basef.SessionName(cwd)
   for buf = 1, vim.fn.bufnr("$") do ---@diagnostic disable-line
-    local bufname = vim.fn.bufname(buf)
+    local bufname = vim.api.nvim_buf_get_name(buf)
     if string.match(bufname, "^.*/$") or string.match(bufname, "^\\[.*\\]$") or
         basef.SessionName(bufname) == current_session then
-      lib.safe_cmd("bd " .. bufname, string.format("Failed to delete buffer `%s`", bufname))
+      vim.api.nvim_buf_delete(buf, { force = true })
     end
   end
   return true
