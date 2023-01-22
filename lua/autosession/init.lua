@@ -32,14 +32,30 @@ This plugin will overwrite it. Do not set save_session_global_dir if use vim.g.s
   end
   setup_vim_commands()
   if config.restore_on_setup == true then
-    M.RestoreSession()
+    if vim.v.vim_did_enter == 1 then
+      vim.pretty_print("after VimEnter")
+      M.RestoreSession()
+    else
+      vim.api.nvim_create_autocmd("VimEnter", {
+        group = vim.api.nvim_create_augroup("AutoSessionAutoRestore", { clear = true }),
+        -- command = "AutoSessionRestore",
+        callback = function()
+          M.RestoreSession()
+        end,
+      })
+    end
+    -- M.RestoreSession()
   end
   if config.autosave_on_quit == true then
-    lib.safe_cmd([[
-    augroup AutoSessionAutoSave
-      autocmd! VimLeave * nested AutoSessionAuto
-    augroup END
-    ]], "Failed to register autocmd for `:AutoSessionAuto`")
+    vim.api.nvim_create_autocmd("VimLeave", {
+      pattern = "*",
+      group = vim.api.nvim_create_augroup("AutoSessionAutoSave", { clear = true }),
+      nested = true,
+      once = true,
+      callback = function()
+        require('autosession').SaveSession(false)
+      end,
+    })
   end
 end
 
