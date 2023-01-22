@@ -72,28 +72,30 @@ M.RestoreSession = function()
   local memory = {}
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_loaded(buf) == true then
-      table.insert(memory, 0, vim.api.nvim_buf_get_name(buf))
+      table.insert(memory, 1, vim.api.nvim_buf_get_name(buf))
     end
   end
-  if basef.file_exist(sessionpath) then
-    lib.safe_cmd("so " .. sessionpath, "`:RestoreSession` failed")
-  elseif config.warn_on_setup then
-    lib.echo("AutoSession WARN: Last session not found. Run :AutoSessionSave to save session.")
-  end
-  -- load the files specified in the arguments after loading the session
-  for _, bufname in ipairs(memory) do
-    if bufname ~= nil and string.len(bufname) > 0 then
-      vim.cmd.edit(bufname)
+  vim.schedule(function()
+    if basef.file_exist(sessionpath) then
+      lib.safe_cmd("so " .. sessionpath, "`:RestoreSession` failed")
+    elseif config.warn_on_setup then
+      lib.echo("AutoSession WARN: Last session not found. Run :AutoSessionSave to save session.")
     end
-  end
-  local current_session = basef.SessionName(cwd)
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    local bufname = vim.api.nvim_buf_is_valid(buf) == true and vim.api.nvim_buf_get_name(buf) or current_session
-    if string.match(bufname, "^.*/$") or string.match(bufname, "^%[.*%]$") or
-        basef.SessionName(bufname) == current_session then
-      vim.api.nvim_buf_delete(buf, { force = true })
+    -- load the files specified in the arguments after loading the session
+    for _, bufname in ipairs(memory) do
+      if bufname ~= nil and string.len(bufname) > 0 then
+        vim.cmd.edit(bufname)
+      end
     end
-  end
+    local current_session = basef.SessionName(cwd)
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      local bufname = vim.api.nvim_buf_is_valid(buf) == true and vim.api.nvim_buf_get_name(buf) or current_session
+      if string.match(bufname, "^.*/$") or string.match(bufname, "^%[.*%]$") or
+          basef.SessionName(bufname) == current_session then
+        vim.api.nvim_buf_delete(buf, { force = true })
+      end
+    end
+  end)
   return true
 end
 
