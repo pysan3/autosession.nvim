@@ -34,8 +34,7 @@ end
 -- Converts Windows style path to unix style (path with /)
 ---@param path string
 M.path_win2unix = function(path)
-  -- local result = string.gsub(path, "\\", "/")
-  local result = path
+  local result = string.gsub(path, "\\", "/")
   return result
 end
 
