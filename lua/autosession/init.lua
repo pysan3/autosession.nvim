@@ -7,14 +7,17 @@ local window = require("autosession.window")
 local M = vim.tbl_deep_extend("force", {}, window, session, lib)
 
 local function setup_vim_commands()
-  lib.safe_cmd([[
+  lib.safe_cmd(
+    [[
   command! -bar AutoSession lua require('autosession').help()
   command! -bar AutoSessionSave lua require('autosession').SaveSession(true)
   command! -bar AutoSessionAuto lua require('autosession').SaveSession(false)
   command! -bar AutoSessionGlobal lua require('autosession').SaveGlobalSession()
   command! -bar AutoSessionDelete lua require('autosession').DeleteSession()
   command! -bar AutoSessionRestore lua require('autosession').RestoreSession()
-  ]], "Failed to setup vim commands.")
+  ]],
+    "Failed to setup vim commands."
+  )
 end
 
 ---setup function, call on startup
@@ -25,15 +28,18 @@ M.setup = function(opts)
     lib.echo(config.msg)
   end
   if vim.g.startify_session_dir ~= nil and config.save_session_global_dir ~= vim.g.startify_session_dir then
-    lib.warn(string.format([[
+    lib.warn(string.format(
+      [[
 `save_session_global_dir` is different from vim.g.startify_session_dir: %s, %s
 This plugin will overwrite it. Do not set save_session_global_dir if use vim.g.startify_session_dir
-    ]], config.save_session_global_dir, vim.g.startify_session_dir))
+    ]],
+      config.save_session_global_dir,
+      vim.g.startify_session_dir
+    ))
   end
   setup_vim_commands()
   if config.restore_on_setup == true then
     if vim.v.vim_did_enter == 1 then
-      vim.pretty_print("after VimEnter")
       M.RestoreSession()
     else
       vim.api.nvim_create_autocmd("VimEnter", {
@@ -53,7 +59,7 @@ This plugin will overwrite it. Do not set save_session_global_dir if use vim.g.s
       nested = true,
       once = true,
       callback = function()
-        require('autosession').SaveSession(false)
+        require("autosession").SaveSession(false)
       end,
     })
   end

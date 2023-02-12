@@ -90,8 +90,11 @@ M.RestoreSession = function()
     local current_session = basef.SessionName(cwd)
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
       local bufname = vim.api.nvim_buf_is_valid(buf) == true and vim.api.nvim_buf_get_name(buf) or current_session
-      if string.match(bufname, "^.*/$") or string.match(bufname, "^%[.*%]$") or
-          basef.SessionName(bufname) == current_session then
+      if
+        string.match(bufname, "^.*/$")
+        or string.match(bufname, "^%[.*%]$")
+        or basef.SessionName(bufname) == current_session
+      then
         vim.api.nvim_buf_delete(buf, { force = true })
       end
     end
