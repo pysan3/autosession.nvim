@@ -8,20 +8,34 @@ This plugin allows saving sessions per-directory, which will be resumed next tim
 
 `:AutoSessionSave`
 
-<img src="https://user-images.githubusercontent.com/41065736/155856720-f9367491-c4ba-47ed-973c-d1e1ac424c65.GIF" alt="restore-session" width="100%"/>
+![autosession](https://user-images.githubusercontent.com/41065736/233378813-3a8c5307-c94c-4095-b5eb-ecf32a7004fd.gif)
 
 ## Install
 
-Install with [vim-plug](https://github.com/junegunn/vim-plug):
+- Install with [vim-plug](https://github.com/junegunn/vim-plug):
 
 ```vim
 Plug 'pysan3/autosession.nvim'
 ```
 
-Install with [packer](https://github.com/wbthomason/packer.nvim):
+- Install with [packer](https://github.com/wbthomason/packer.nvim):
 
 ```lua
 use { "pysan3/autosession.nvim" }
+```
+
+- Install with [lazy.nvim](https://github.com/folke/lazy.nvim)
+
+```lua
+return {
+  "pysan3/autosession.nvim", -- restore previous session
+  event = { "VeryLazy" },                   -- OPTIONAL
+  -- lazy = false,                          -- If you do not want to lazy load.
+  dependencies = { "mhinz/vim-startify" },  -- OPTIONAL: Used for `:AutoSessionGlobal`
+  opts = {
+    -- Options explained below.
+  },
+}
 ```
 
 ## Setup
