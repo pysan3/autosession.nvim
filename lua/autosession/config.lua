@@ -3,7 +3,6 @@
 ---@field restore_on_setup boolean: If true, automatically restore session on nvim startup
 ---@field warn_on_setup boolean: If true, warning shown when no `.session.vim` is found
 ---@field autosave_on_quit boolean: If true, automatically overwrites sessionfile if exists
----@field force_autosave boolean: If true, automatically closes session without confirmation
 ---@field save_session_global_dir string
 --                        dir path to where global session files should be stored.
 --                        global sessions will show up in startify screen as dirname of the session
@@ -15,7 +14,6 @@ local DEFAULT_OPTS = {
   restore_on_setup = false,
   warn_on_setup = false,
   autosave_on_quit = false,
-  force_autosave = false,
   save_session_global_dir = vim.g.startify_session_dir or vim.fn.stdpath("data") .. "/session",
   sessionfile_name = ".session.vim",
 }

@@ -12,18 +12,14 @@ M.SaveSession = function(create_new_if_not_exist)
   local cwd = vim.fn.getcwd()
   local sessionpath = basef.FullPath(cwd .. "/" .. config.sessionfile_name)
   if create_new_if_not_exist == true or basef.file_exist(sessionpath) then
-    if config.force_autosave then
-      local parent_dirname = vim.fn.fnamemodify(sessionpath, ":p:h")
-      if vim.fn.isdirectory(parent_dirname) == 0 then
-        vim.fn.mkdir(parent_dirname, "p")
-      end
-      local success, _ = lib.safe_cmd("mksession! " .. sessionpath, "Failed to make session to " .. sessionpath)
-      if success then
-        print(config.sessionfile_name .. " created.")
-        vim.cmd("redraw")
-      end
-    else
-      lib.echo("Aborted!", "error")
+    local parent_dirname = vim.fn.fnamemodify(sessionpath, ":p:h")
+    if vim.fn.isdirectory(parent_dirname) == 0 then
+      vim.fn.mkdir(parent_dirname, "p")
+    end
+    local success, _ = lib.safe_cmd("mksession! " .. sessionpath, "Failed to make session to " .. sessionpath)
+    if success then
+      print(config.sessionfile_name .. " created.")
+      vim.cmd("redraw")
     end
   end
   return sessionpath
