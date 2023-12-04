@@ -73,7 +73,7 @@ M.RestoreSession = function()
   end
   vim.schedule(function()
     if basef.file_exist(sessionpath) then
-      lib.safe_cmd("so " .. sessionpath, "`:RestoreSession` failed")
+      lib.safe_cmd("silent so " .. sessionpath, "`:RestoreSession` failed")
     elseif config.warn_on_setup then
       lib.echo("AutoSession WARN: Last session not found. Run :AutoSessionSave to save session.")
     end
