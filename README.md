@@ -56,6 +56,7 @@ require("autosession").setup({
   --                        dir path to where global session files should be stored.
   --                        global sessions will show up in startify screen as dirname of the session
   sessionfile_name = ".session.vim", -- string: default name of sessionfile. better be .gitignored
+  disable_envvar = "NVIM_DISABLE_AUTOSESSION", -- string: disable this plugin altogether when this envvar is found
 })
 ```
 
@@ -80,6 +81,31 @@ Use the following commands.
   - Delete a global session.
 
 ## Tips
+
+### Temporary Disable AutoLoading
+
+When the environment variable passed to `config.disable_envvar` (default: `NVIM_DISABLE_AUTOSESSION`)
+is not `nil`, this plugin will be disabled altogether (does not autosave on quit as well).
+
+This might be useful when you want to peek into a single file in a session directory.
+
+#### Unix System
+
+```sh
+NVIM_DISABLE_AUTOSESSION=1 nvim
+```
+
+#### Windows
+
+```powershell
+# PowerShell
+$env:NVIM_DISABLE_AUTOSESSION=1
+nvim
+$env:NVIM_DISABLE_AUTOSESSION=$null
+
+# Command Prompt
+cmd /C "set NVIM_DISABLE_AUTOSESSION=1 && nvim"
+```
 
 ### Recommended Dependencies
 

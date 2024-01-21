@@ -7,6 +7,7 @@
 --                        dir path to where global session files should be stored.
 --                        global sessions will show up in startify screen as dirname of the session
 ---@field sessionfile_name string: default name of sessionfile. better be .gitignored
+---@field disable_envvar string: name of environment variable to disable this plugin altogether
 
 ---@type autosession.Config
 local DEFAULT_OPTS = {
@@ -16,6 +17,7 @@ local DEFAULT_OPTS = {
   autosave_on_quit = false,
   save_session_global_dir = vim.g.startify_session_dir or vim.fn.stdpath("data") .. "/session",
   sessionfile_name = ".session.vim",
+  disable_envvar = "NVIM_DISABLE_AUTOSESSION",
 }
 
 ---@type autosession.Config

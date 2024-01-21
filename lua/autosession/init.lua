@@ -24,6 +24,9 @@ end
 ---@param opts autosession.Config: look https://github.com/pysan3/autosession.nvim for config detail
 M.setup = function(opts)
   config.set_options(opts)
+  if vim.env.NVIM_DISABLE_AUTOSESSION ~= nil and string.len(vim.env.NVIM_DISABLE_AUTOSESSION) > 0 then
+    lib.info("$NVIM_DISABLE_AUTOSESSION found. Disabled `autosession.nvim`.")
+  end
   if config.msg ~= nil then
     lib.echo(config.msg)
   end
