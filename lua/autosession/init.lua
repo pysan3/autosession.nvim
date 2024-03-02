@@ -25,7 +25,9 @@ end
 M.setup = function(opts)
   config.set_options(opts)
   if vim.env.NVIM_DISABLE_AUTOSESSION ~= nil and string.len(vim.env.NVIM_DISABLE_AUTOSESSION) > 0 then
-    lib.info("$NVIM_DISABLE_AUTOSESSION found. Disabled `autosession.nvim`.")
+    if config.warn_on_setup then
+      lib.warn("$NVIM_DISABLE_AUTOSESSION found. Disabled `autosession.nvim`.")
+    end
   end
   if config.msg ~= nil then
     lib.echo(config.msg)
